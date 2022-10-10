@@ -15,7 +15,8 @@
       "@/*": ["./src/*"]
     },
     "jsx": "preserve",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
   // "compilerOptions": {
   //   "target": "es2018",
