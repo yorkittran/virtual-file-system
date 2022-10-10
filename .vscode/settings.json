@@ -1,0 +1,17 @@
+{
+  "eslint.validate": ["vue", "html", "javascript", "typescript"],
+  "editor.tabSize": 2,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": ".prettierrc",
+  "prettier.enable": true,
+  "cSpell.words": [
+    "asynciterable",
+    "composables",
+    "typecheck",
+    "vitejs",
+    "vnode"
+  ]
+}
