@@ -118,7 +118,8 @@ const onFolderClick = async (folderName:string, folderId: string) => {
 
     .items-container {
       display: grid;
-      grid-template-columns: repeat(6, 200px [col-start]);
+      row-gap: 20px;
+      grid-template-columns: repeat(8, 150px [col-start]);
 
       .item {
         display: flex;
