@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const itemsQuery = gql`
-  query itemsQuery($folderId: String) {
+  query itemsQuery($folderId: ID!) {
     items(folderId: $folderId) {
       folders {
         id
