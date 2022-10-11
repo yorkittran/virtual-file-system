@@ -9,6 +9,7 @@ console.log(import.meta.env.VFS_SERVER_ENDPOINT)
 
 <style lang="scss">
 @import '@/assets/base.css';
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 
 #app {
   max-width: 1280px;

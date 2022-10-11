@@ -5,6 +5,7 @@ export const runCommandMutation = gql`
     runCommand(command: $command, folderId: $folderId) {
       error
       result
+      currentFolderId
     }
   }
 `

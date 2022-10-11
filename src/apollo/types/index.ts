@@ -81,5 +81,6 @@ export interface RunCommandResponse {
   runCommand: {
     error: string
     result: string
+    currentFolderId: string
   }
 }

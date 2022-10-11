@@ -6,7 +6,7 @@ import { apolloClient } from '@/service/apolloClient'
 
 import { useGetItems } from '@/composables/useGetItems'
 import { useRunCommand } from '@/composables/useRunCommand'
-import { GetItemsInput, RunCommandInput } from '@/apollo/types'
+import { GetItemsInput, RunCommandInput, RunCommandResponse } from '@/apollo/types'
 
 import { useHelper } from '@/composables/useHelper'
 
@@ -63,7 +63,7 @@ export const useFolderStore = defineStore({
       }
     },
 
-    async runCommand(payload: RunCommandInput): Promise<void | string> {
+    async runCommand(payload: RunCommandInput): Promise<void | RunCommandResponse> {
       try {
         const { useRunCommandMutate } = useRunCommand()
 
@@ -73,7 +73,7 @@ export const useFolderStore = defineStore({
         if (response?.errors?.length) {
           throw response.errors
         } else if (data) {
-          return data.result || data.error
+          return data
         }
       } catch (error: any) {
         helper.handleError(error, 'user/register')
