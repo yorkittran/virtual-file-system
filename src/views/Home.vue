@@ -19,6 +19,7 @@ const state: {
 })
 
 const onEnterPressed = async () => {
+  state.commandInput = state.commandInput.trim()
   if (state.commandInput === 'clear') {
     state.inputHistory = ''
   } else {
