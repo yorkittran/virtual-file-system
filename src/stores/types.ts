@@ -8,4 +8,5 @@ export interface UserState {
 export interface FolderState {
   currentFolder: Folder
   cliCurrentFolder: Folder
+  loading: boolean
 }

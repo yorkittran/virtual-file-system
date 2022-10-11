@@ -6,9 +6,12 @@ import { apolloClient } from '@/service/apolloClient'
 
 import { useGetItems } from '@/composables/useGetItems'
 import { useRunCommand } from '@/composables/useRunCommand'
-import { GetItemsInput, RunCommandInput, RunCommandResponse } from '@/apollo/types'
+import {
+  GetItemsInput,
+  RunCommandInput,
+  RunCommandResponse
+} from '@/apollo/types'
 import { Folder, SystemFile } from '@/apollo/types/index'
-
 
 import { useHelper } from '@/composables/useHelper'
 
@@ -37,12 +40,14 @@ export const useFolderStore = defineStore({
       size: 0,
       type: ''
     },
-    loading: false,
+    loading: false
   }),
 
   getters: {
-    getCurrentFolderFolders: (state): Folder[] => state.currentFolder.folders || [],
-    getCurrentFolderSystemFiles: (state): SystemFile[] => state.currentFolder.systemFiles || [],
+    getCurrentFolderFolders: (state): Folder[] =>
+      state.currentFolder.folders || [],
+    getCurrentFolderSystemFiles: (state): SystemFile[] =>
+      state.currentFolder.systemFiles || []
   },
 
   actions: {
@@ -57,7 +62,12 @@ export const useFolderStore = defineStore({
 
           if (items.value) {
             this.currentFolder.id = payload.folderId
-            this.currentFolder.folders = [...items.value.folders]
+            this.currentFolder.folders = [
+              ...items.value.folders.map((item) => ({
+                ...item,
+                path: []
+              }))
+            ]
             this.currentFolder.systemFiles = [...items.value.systemFiles]
           }
         })
@@ -67,7 +77,11 @@ export const useFolderStore = defineStore({
       }
     },
 
-    async runCommand(payload: RunCommandInput): Promise<void | RunCommandResponse> {
+    async runCommand(payload: RunCommandInput): Promise<void | {
+      error: string
+      result: string
+      currentFolderId: string
+    }> {
       try {
         const { useRunCommandMutate } = useRunCommand()
 
@@ -85,7 +99,9 @@ export const useFolderStore = defineStore({
     },
 
     handlePath(folderName: string, folderId: string): void {
-      const index = this.currentFolder.path.findIndex(path => path.id === folderId)
+      const index = this.currentFolder.path.findIndex(
+        (path) => path.id === folderId
+      )
 
       if (index === -1) {
         this.currentFolder.path.push({ name: folderName, id: folderId })

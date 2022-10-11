@@ -45,7 +45,10 @@ export interface SystemFile {
 
 export interface Folder {
   id: string
-  path?: Object[]
+  path: {
+    id: string
+    name: string
+  }[]
   name: string
   folders?: Folder[]
   systemFiles?: SystemFile[]

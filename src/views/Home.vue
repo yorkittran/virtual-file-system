@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/user'
 const folderStore = useFolderStore()
 const userStore = useUserStore()
 
-const { currentFolder, cliCurrentFolder } = storeToRefs(folderStore)
+const { cliCurrentFolder } = storeToRefs(folderStore)
 const state: {
   inputHistory: string
   commandInput: string
@@ -27,7 +27,9 @@ const onEnterPressed = async () => {
       command: state.commandInput,
       folderId: cliCurrentFolder.value.id
     })
-    state.inputHistory = state.inputHistory.concat(`${state.promptCommand}\t${state.commandInput}\n`)
+    state.inputHistory = state.inputHistory.concat(
+      `${state.promptCommand}\t${state.commandInput}\n`
+    )
     if (data) {
       if (state.commandInput.match('^cd.*$')) {
         if (!data.error) {
@@ -37,7 +39,9 @@ const onEnterPressed = async () => {
           state.inputHistory = state.inputHistory.concat(`${data.error}\n`)
         }
       } else {
-        state.inputHistory = state.inputHistory.concat(`${data.result || data.error}\n`)
+        state.inputHistory = state.inputHistory.concat(
+          `${data.result || data.error}\n`
+        )
       }
     }
     await folderStore.getFolderItems({ folderId: folderStore.currentFolder.id })
@@ -45,12 +49,12 @@ const onEnterPressed = async () => {
   state.commandInput = ''
 }
 
-const onFolderClick = async (folderName:string, folderId: string) => {
+const onFolderClick = async (folderName: string, folderId: string) => {
   await folderStore.getFolderItems({ folderId: folderId })
   folderStore.handlePath(folderName, folderId)
 }
 
-const signOut = async() => {
+const signOut = async () => {
   if (confirm('Process to Sign out?')) {
     await userStore.signOut()
   }
@@ -63,21 +67,39 @@ const signOut = async() => {
         <p class="title">File Explorer</p>
         <p class="greeting">
           Hello, {{ userStore.email }}
-          <font-awesome-icon icon="fa-solid fa-right-from-bracket" class="icon-sign-out" @click="signOut" />
+          <font-awesome-icon
+            icon="fa-solid fa-right-from-bracket"
+            class="icon-sign-out"
+            @click="signOut"
+          />
         </p>
       </div>
       <div class="path">
-        <span v-for="path in folderStore.currentFolder.path" :key="path.id" class="path-item" @click="onFolderClick(path.name, path.id)">
+        <span
+          v-for="path in folderStore.currentFolder.path"
+          :key="path.id"
+          class="path-item"
+          @click="onFolderClick(path.name, path.id)"
+        >
           <span class="indicator">/</span>
           {{ path.name }}
         </span>
       </div>
-      <div v-if="!folderStore.isLoading" class="items-container">
-        <div v-for="folder in folderStore.getCurrentFolderFolders" :key="folder.id" class="item" @click="onFolderClick(folder.name, folder.id)">
+      <div v-if="!folderStore.loading" class="items-container">
+        <div
+          v-for="folder in folderStore.getCurrentFolderFolders"
+          :key="folder.id"
+          class="item"
+          @click="onFolderClick(folder.name, folder.id)"
+        >
           <font-awesome-icon icon="fa-solid fa-folder" class="icon-folder" />
           {{ folder.name }}
         </div>
-        <div v-for="systemFile in folderStore.getCurrentFolderSystemFiles" :key="systemFile.id" class="item">
+        <div
+          v-for="systemFile in folderStore.getCurrentFolderSystemFiles"
+          :key="systemFile.id"
+          class="item"
+        >
           <font-awesome-icon icon="fa-solid fa-file-lines" class="icon-file" />
           {{ systemFile.name }}
         </div>
@@ -126,7 +148,7 @@ const signOut = async() => {
 
         .icon-sign-out {
           margin-left: 8px;
-          color: #FFA759;
+          color: #ffa759;
           cursor: pointer;
         }
       }
@@ -161,13 +183,13 @@ const signOut = async() => {
 
         .icon-folder {
           font-size: 120px;
-          color: #FFEE99;
+          color: #ffee99;
           cursor: pointer;
         }
 
         .icon-file {
           font-size: 120px;
-          color: #73D0FE;
+          color: #73d0fe;
         }
       }
     }
@@ -177,7 +199,7 @@ const signOut = async() => {
     height: 35vh;
     width: 100%;
     background-color: #202531;
-    color: #CACCC6;
+    color: #caccc6;
     font-family: 'Inconsolata', monospace;
     padding: 16px;
     border-radius: 4px;
@@ -202,7 +224,7 @@ const signOut = async() => {
       .input-command {
         font-family: 'Inconsolata', monospace;
         background-color: #202531;
-        color: #CACCC6;
+        color: #caccc6;
         border: 0;
         width: 100%;
       }
