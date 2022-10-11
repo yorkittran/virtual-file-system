@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFolderStore } from '@/stores/folder'
 import { useUserStore } from '@/stores/user'
 
 const folderStore = useFolderStore()
 const userStore = useUserStore()
+const inputCommand = ref(null)
 
 const { cliCurrentFolder } = storeToRefs(folderStore)
 const state: {
@@ -47,6 +48,11 @@ const onEnterPressed = async () => {
     await folderStore.getFolderItems({ folderId: folderStore.currentFolder.id })
   }
   state.commandInput = ''
+
+  nextTick(() => {
+    const targetEl = document.getElementById("input-history");
+    if (targetEl) targetEl.scrollTop = targetEl.scrollHeight;
+  })
 }
 
 const onFolderClick = async (folderName: string, folderId: string) => {
@@ -58,6 +64,11 @@ const signOut = async () => {
   if (confirm('Process to Sign out?')) {
     await userStore.signOut()
   }
+}
+
+const onClickInputHistory = () => {
+  // @ts-ignore
+  inputCommand.value.focus()
 }
 </script>
 <template>
@@ -106,7 +117,7 @@ const signOut = async () => {
       </div>
     </div>
     <div class="command-line">
-      <div class="input-history" contenteditable="false">
+      <div id="input-history" class="input-history" contenteditable="false" @click="onClickInputHistory">
         {{ state.inputHistory }}
       </div>
       <div class="command">
@@ -114,6 +125,7 @@ const signOut = async () => {
         <input
           class="input-command"
           v-model="state.commandInput"
+          ref="inputCommand"
           @keyup.enter="onEnterPressed"
         />
       </div>
