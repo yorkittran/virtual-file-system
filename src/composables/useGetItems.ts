@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { useLazyQuery } from '@vue/apollo-composable'
-import { getItemsQuery as itemsQuery } from '@/apollo/queries/getItems'
+import { itemsQuery } from '@/apollo/queries/getItems'
 import { GetItemsResponse, GetItemsInput } from '@/apollo/types/index'
 
 export const useGetItems = () => {
