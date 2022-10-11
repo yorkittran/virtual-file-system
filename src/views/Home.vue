@@ -2,8 +2,11 @@
 import { reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFolderStore } from '@/stores/folder'
+import { useUserStore } from '@/stores/user'
 
 const folderStore = useFolderStore()
+const userStore = useUserStore()
+
 const { currentFolder, cliCurrentFolder } = storeToRefs(folderStore)
 const state: {
   inputHistory: string
@@ -36,6 +39,7 @@ const onEnterPressed = async () => {
         state.inputHistory = state.inputHistory.concat(`${data.result || data.error}\n`)
       }
     }
+    await folderStore.getFolderItems({ folderId: folderStore.currentFolder.id })
   }
   state.commandInput = ''
 }
@@ -45,11 +49,22 @@ const onFolderClick = async (folderName:string, folderId: string) => {
   folderStore.handlePath(folderName, folderId)
 }
 
+const signOut = async() => {
+  if (confirm('Process to Sign out?')) {
+    await userStore.signOut()
+  }
+}
 </script>
 <template>
   <div class="root">
     <div class="file-explorer">
-      <h2 class="title">File Explorer</h2>
+      <div class="header">
+        <p class="title">File Explorer</p>
+        <p class="greeting">
+          Hello, {{ userStore.email }}
+          <font-awesome-icon icon="fa-solid fa-right-from-bracket" class="icon-sign-out" @click="signOut" />
+        </p>
+      </div>
       <div class="path">
         <span v-for="path in folderStore.currentFolder.path" :key="path.id" class="path-item" @click="onFolderClick(path.name, path.id)">
           <span class="indicator">/</span>
@@ -58,11 +73,11 @@ const onFolderClick = async (folderName:string, folderId: string) => {
       </div>
       <div v-if="!folderStore.isLoading" class="items-container">
         <div v-for="folder in folderStore.getCurrentFolderFolders" :key="folder.id" class="item" @click="onFolderClick(folder.name, folder.id)">
-          <i class="icon-folder fa-solid fa-folder"></i>
+          <font-awesome-icon icon="fa-solid fa-folder" class="icon-folder" />
           {{ folder.name }}
         </div>
         <div v-for="systemFile in folderStore.getCurrentFolderSystemFiles" :key="systemFile.id" class="item">
-          <i class="icon-file fa-solid fa-file-lines"></i>
+          <font-awesome-icon icon="fa-solid fa-file-lines" class="icon-file" />
           {{ systemFile.name }}
         </div>
       </div>
@@ -95,9 +110,24 @@ const onFolderClick = async (folderName:string, folderId: string) => {
     height: 60vh;
     width: 100%;
 
-    .title {
-      font-size: 36px;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 24px;
+
+      .title {
+        font-size: 36px;
+      }
+
+      .greeting {
+        font-size: 20px;
+
+        .icon-sign-out {
+          color: #FFA759;
+          cursor: pointer;
+        }
+      }
     }
 
     .path {

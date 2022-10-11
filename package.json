@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
     "@vue/apollo-composable": "^4.0.0-alpha.19",
     "graphql": "^16.5.0",
     "graphql-tag": "^2.12.6",
