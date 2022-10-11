@@ -35,15 +35,37 @@ const onEnterPressed = async () => {
       } else {
         state.inputHistory = state.inputHistory.concat(`${data.result || data.error}\n`)
       }
-    } 
+    }
   }
   state.commandInput = ''
 }
+
+const onFolderClick = async (folderName:string, folderId: string) => {
+  await folderStore.getFolderItems({ folderId: folderId })
+  folderStore.handlePath(folderName, folderId)
+}
+
 </script>
 <template>
   <div class="root">
     <div class="file-explorer">
-      <h2>File Explorer here</h2>
+      <h2 class="title">File Explorer</h2>
+      <div class="path">
+        <span v-for="path in folderStore.currentFolder.path" :key="path.id" class="path-item" @click="onFolderClick(path.name, path.id)">
+          <span class="indicator">/</span>
+          {{ path.name }}
+        </span>
+      </div>
+      <div v-if="!folderStore.isLoading" class="items-container">
+        <div v-for="folder in folderStore.getCurrentFolderFolders" :key="folder.id" class="item" @click="onFolderClick(folder.name, folder.id)">
+          <i class="icon-folder fa-solid fa-folder"></i>
+          {{ folder.name }}
+        </div>
+        <div v-for="systemFile in folderStore.getCurrentFolderSystemFiles" :key="systemFile.id" class="item">
+          <i class="icon-file fa-solid fa-file-lines"></i>
+          {{ systemFile.name }}
+        </div>
+      </div>
     </div>
     <div class="command-line">
       <div class="input-history" contenteditable="false">
@@ -67,10 +89,55 @@ const onEnterPressed = async () => {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  color: #202531;
 
   .file-explorer {
     height: 60vh;
     width: 100%;
+
+    .title {
+      font-size: 36px;
+      padding: 24px;
+    }
+
+    .path {
+      display: inline-flex;
+      gap: 8px;
+      padding: 24px;
+
+      .path-item {
+        font-size: 16px;
+        cursor: pointer;
+
+        .indicator {
+          font-size: 16px;
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .items-container {
+      display: grid;
+      grid-template-columns: repeat(6, 200px [col-start]);
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 24px;
+
+        .icon-folder {
+          font-size: 120px;
+          color: #FFEE99;
+          cursor: pointer;
+        }
+
+        .icon-file {
+          font-size: 120px;
+          color: #73D0FE;
+        }
+      }
+    }
   }
 
   .command-line {

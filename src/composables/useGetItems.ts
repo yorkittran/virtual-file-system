@@ -13,14 +13,18 @@ export const useGetItems = () => {
     result,
     onResult: getItemsOnResult,
     onError: getItemsOnError
-  } = useLazyQuery<GetItemsResponse, GetItemsInput>(itemsQuery)
+  } = useLazyQuery<GetItemsResponse, GetItemsInput>(itemsQuery, {
+    fetchPolicy: 'no-cache'
+  })
 
   const getItemsQuery = async (payload: GetItemsInput) => {
     try {
       if (queryCalled.value) {
+        console.log('in refetch')
         await refetch(payload)
       } else {
         await load(undefined, payload)
+        console.log(getItemsOnResult)
       }
     } catch (error) {
       console.log('useGetItems', error)

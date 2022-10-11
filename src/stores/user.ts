@@ -106,6 +106,8 @@ export const useUserStore = defineStore({
             useFolderStore().getFolderItems({
               folderId: this.user.rootFolder.id
             })
+            useFolderStore().handlePath('root', this.user.rootFolder.id)
+            useFolderStore().setCliCurrentFolderId(this.user.rootFolder.id)
           }
         })
       } catch (error: any) {
