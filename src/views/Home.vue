@@ -116,8 +116,8 @@ const onClickInputHistory = () => {
         </div>
       </div>
     </div>
-    <div class="command-line">
-      <div id="input-history" class="input-history" contenteditable="false" @click="onClickInputHistory">
+    <div class="command-line" @click="onClickInputHistory">
+      <div id="input-history" class="input-history" contenteditable="false">
         {{ state.inputHistory }}
       </div>
       <div class="command">
