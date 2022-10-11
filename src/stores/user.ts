@@ -39,6 +39,9 @@ export const useUserStore = defineStore({
       router.push({ name: ROUTES.HOME.name })
 
       await useFolderStore().getFolderItems({ folderId: user.rootFolder.id })
+
+      useFolderStore().handlePath('root', this.user.rootFolder.id)
+      useFolderStore().setCliCurrentFolderId(this.user.rootFolder.id)
     },
 
     async register(payload: RegisterInput) {

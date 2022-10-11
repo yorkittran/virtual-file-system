@@ -124,6 +124,7 @@ const signOut = async() => {
         font-size: 20px;
 
         .icon-sign-out {
+          margin-left: 8px;
           color: #FFA759;
           cursor: pointer;
         }
