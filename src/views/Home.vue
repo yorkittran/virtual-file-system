@@ -3,6 +3,7 @@ import { reactive, nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFolderStore } from '@/stores/folder'
 import { useUserStore } from '@/stores/user'
+import { USER_MANUAL } from '@/data/constants'
 
 const folderStore = useFolderStore()
 const userStore = useUserStore()
@@ -75,15 +76,23 @@ const onClickInputHistory = () => {
   <div class="root">
     <div class="file-explorer">
       <div class="header">
-        <p class="title">File Explorer</p>
-        <p class="greeting">
+        <div class="title">
+          File Explorer
+          <span class="tooltip" :data-tooltip="USER_MANUAL">
+            <font-awesome-icon
+              icon="fa-solid fa-circle-question"
+              class="icon-question"
+            />
+          </span>
+        </div>
+        <div class="greeting">
           Hello, {{ userStore.email }}
           <font-awesome-icon
             icon="fa-solid fa-right-from-bracket"
             class="icon-sign-out"
             @click="signOut"
           />
-        </p>
+        </div>
       </div>
       <div class="path">
         <span
@@ -153,6 +162,44 @@ const onClickInputHistory = () => {
 
       .title {
         font-size: 36px;
+
+        .tooltip {
+          white-space: pre-line;
+
+          .icon-question {
+            margin-left: 8px;
+            color: #707a8c;
+            cursor: pointer;
+          }
+
+          &:after {
+            content: attr(data-tooltip);
+            background: #e6e6e6;
+            width: 600px;
+            height: 300px;
+            font-size: 14px;
+            font-weight: 400;
+            bottom: -260px;
+            left: 70px;
+            padding: 10px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            z-index: 1;
+          }
+
+          &:before, &:after {
+            position: absolute;
+            content: ‘’;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+          }
+
+          &:hover::before, &:hover::after {
+            opacity: 1;
+            transform: translateY(-2px);
+          }
+        }
       }
 
       .greeting {
@@ -184,23 +231,23 @@ const onClickInputHistory = () => {
 
     .items-container {
       display: grid;
-      row-gap: 20px;
+      row-gap: 32px;
       grid-template-columns: repeat(8, 150px [col-start]);
 
       .item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size: 24px;
+        font-size: 16px;
 
         .icon-folder {
-          font-size: 120px;
+          font-size: 80px;
           color: #ffee99;
           cursor: pointer;
         }
 
         .icon-file {
-          font-size: 120px;
+          font-size: 80px;
           color: #73d0fe;
         }
       }
@@ -239,10 +286,10 @@ const onClickInputHistory = () => {
         color: #caccc6;
         border: 0;
         width: 100%;
-      }
 
-      .input-command:focus {
-        outline: 0;
+        &:focus {
+          outline: 0;
+        }
       }
     }
   }

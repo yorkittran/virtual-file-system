@@ -9,9 +9,9 @@ import { apolloClient } from './service/apolloClient'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFolder, faFileLines, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faFolder, faFileLines, faRightFromBracket, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faFolder, faFileLines, faRightFromBracket)
+library.add(faFolder, faFileLines, faRightFromBracket, faCircleQuestion)
 
 const app = createApp(App)
 
